@@ -85,15 +85,17 @@ for task_file in "$epic_dir"/*.md; do
         verdict=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('verdict', 'error'))" 2>/dev/null || echo "error")
         confidence=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('confidence', 0))" 2>/dev/null || echo "0")
         processing_path=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('processingPath', 'unknown'))" 2>/dev/null || echo "unknown")
+        done_policy_met=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('donePolicyMet', False))" 2>/dev/null || echo "false")
+        tier=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('tier', 'unknown'))" 2>/dev/null || echo "unknown")
 
-        if [ "$verdict" = "done" ] && [ "$(echo "$confidence > 0.7" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
-            echo "   Oracle Status: ✅ DONE (confidence: $confidence, path: $processing_path)"
+        if [ "$verdict" = "DONE" ] && [ "$done_policy_met" = "True" ]; then
+            echo "   Oracle Status: ✅ DONE (confidence: $confidence, tier: $tier, path: $processing_path)"
             verified_done=$((verified_done + 1))
-        elif [ "$verdict" = "done" ]; then
-            echo "   Oracle Status: ⚠️ DONE (LOW CONFIDENCE: $confidence, path: $processing_path)"
+        elif [ "$verdict" = "DONE" ]; then
+            echo "   Oracle Status: ⚠️ DONE (TIER 1 ONLY: confidence: $confidence, tier: $tier, path: $processing_path)"
             verified_done=$((verified_done + 1))
-        elif [ "$verdict" = "not-done" ]; then
-            echo "   Oracle Status: ❌ NOT DONE (confidence: $confidence, path: $processing_path)"
+        elif [ "$verdict" = "NOT-DONE" ]; then
+            echo "   Oracle Status: ❌ NOT DONE (confidence: $confidence, tier: $tier, path: $processing_path)"
             verified_not_done=$((verified_not_done + 1))
         else
             echo "   Oracle Status: ❓ ERROR/INCONCLUSIVE ($verdict, confidence: $confidence)"

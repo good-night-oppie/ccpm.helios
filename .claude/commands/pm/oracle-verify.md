@@ -58,12 +58,14 @@ oracle_response=$(curl -s -X POST "http://localhost:3000/api/bridge/evaluate" \
         }
     }")
 
-# Parse Oracle response
+# Parse Oracle response - Two-tier system fields
 verdict=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('verdict', 'error'))" 2>/dev/null || echo "error")
 confidence=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('confidence', 0))" 2>/dev/null || echo "0")
 reasoning=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('reasoning', 'No reasoning provided'))" 2>/dev/null || echo "No reasoning provided")
 processing_path=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('processingPath', 'unknown'))" 2>/dev/null || echo "unknown")
 complexity=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('complexity', 0))" 2>/dev/null || echo "0")
+done_policy_met=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('donePolicyMet', False))" 2>/dev/null || echo "false")
+tier=$(echo "$oracle_response" | python3 -c "import sys, json; print(json.load(sys.stdin).get('tier', 'unknown'))" 2>/dev/null || echo "unknown")
 ```
 
 ### 4. Display Results
@@ -76,6 +78,8 @@ echo "════════════════════════�
 echo ""
 echo "🎯 Verdict: $verdict"
 echo "📊 Confidence: $confidence"
+echo "🏛️ Tier: $tier"
+echo "📋 Done Policy Met: $done_policy_met"
 echo "🧠 Processing Path: $processing_path"
 echo "⚖️ Complexity Score: $complexity"
 echo ""
