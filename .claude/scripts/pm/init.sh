@@ -22,10 +22,20 @@ echo "🚀 Initializing Claude Code PM System"
 echo "======================================"
 echo ""
 
-# Check for required tools
-echo "🔍 Checking dependencies..."
+# Run comprehensive dependency check
+echo "🔍 Running comprehensive dependency validation..."
+echo ""
 
-# Check gh CLI
+if ! bash scripts/check-deps.sh; then
+    echo ""
+    echo "❌ Dependency validation failed. Please install missing dependencies before continuing."
+    exit 1
+fi
+
+echo ""
+echo "🔍 Checking GitHub CLI setup..."
+
+# Check gh CLI (already validated by dependency checker)
 if command -v gh &> /dev/null; then
   echo "  ✅ GitHub CLI (gh) installed"
 else

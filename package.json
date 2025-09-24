@@ -1,0 +1,53 @@
+{
+  "name": "ccpm.helios",
+  "version": "1.0.0",
+  "description": "AI-Powered Project Management with Done Oracle Integration - Enterprise-grade project management system combining spec-driven development, AI-powered task validation, and intelligent quality gates through Done Oracle's two-tier architecture",
+  "keywords": [
+    "project-management",
+    "ai-powered",
+    "done-oracle",
+    "claude-code",
+    "spec-driven",
+    "github-integration"
+  ],
+  "author": "EdwardTang <edward@automaze.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/good-night-Oppie/ccpm.helios.git"
+  },
+  "homepage": "https://github.com/good-night-Oppie/ccpm.helios#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "init": "bash .claude/scripts/pm/init.sh",
+    "validate": "bash .claude/scripts/pm/validate.sh",
+    "check-deps": "bash scripts/check-deps.sh",
+    "oracle:status": "bash .claude/scripts/pm/oracle-status.sh",
+    "oracle:verify": "bash .claude/scripts/pm/oracle-verify.sh",
+    "test": "echo 'No Node.js tests configured. Use /pm:validate for system validation.'",
+    "postinstall": "npm run check-deps"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
+    "done-oracle": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "done-oracle": {
+      "optional": false
+    }
+  },
+  "systemDependencies": {
+    "git": ">=2.30.0",
+    "curl": "*",
+    "python3": ">=3.6",
+    "bc": "*",
+    "bash": ">=4.0"
+  },
+  "optionalSystemDependencies": {
+    "gh": ">=2.0.0"
+  }
+}
