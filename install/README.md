@@ -48,10 +48,16 @@ CCPM includes **Done Oracle** integration for AI-powered task completion verific
 ### 1. Prerequisites
 - Node.js 18+ installed
 - Done Oracle service running at `http://localhost:3000`
+- Install Done Oracle from: https://github.com/good-night-Oppie/oppie-done-oracle
 
 ### 2. Done Oracle Service Setup
 
 ```bash
+# Install Done Oracle from source:
+git clone https://github.com/good-night-Oppie/oppie-done-oracle.git
+cd oppie-done-oracle
+# Follow installation instructions in the repository
+
 # If you have Done Oracle installed separately:
 done-oracle --port 3000 --health-check
 
