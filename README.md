@@ -135,6 +135,9 @@ No shortcuts. No assumptions. No regrets.
 ├── commands/          # Command definitions
 │   ├── context/       # Create, update, and prime context
 │   ├── pm/            # ← Project management commands (this system)
+│   │   ├── oracle-status.md    # Done Oracle verification status for epics
+│   │   ├── oracle-verify.md    # Manual task verification with Done Oracle
+│   │   └── ...        # Other PM commands
 │   └── testing/       # Prime and execute tests (edit this)
 ├── context/           # Project-wide context files
 ├── epics/             # ← PM's local workspace (place in .gitignore)
@@ -142,9 +145,34 @@ No shortcuts. No assumptions. No regrets.
 │       ├── epic.md    # Implementation plan
 │       ├── [#].md     # Individual task files
 │       └── updates/   # Work-in-progress updates
+│           └── [task#]/
+│               └── oracle-verification-*.json  # Oracle verification records
 ├── prds/              # ← PM's PRD files
 ├── rules/             # Place any rule files you'd like to reference here
 └── scripts/           # Place any script files you'd like to use here
+```
+
+### Done Oracle Integration
+
+The system integrates with **Done Oracle** for AI-powered task completion verification:
+
+- **Service**: Runs at `http://localhost:3000` with health monitoring
+- **API**: `http://localhost:3000/api/bridge/evaluate` for task evaluation
+- **Two-Tier Architecture**: VERDICT_GENERATION (Tier 1) + DONE_POLICY (Tier 2)
+  - **Tier 1**: Flexible thresholds for initial pass/fail assessment
+  - **Tier 2**: Strict 95% requirements across all metrics for DONE verdict
+- **Dynamic Evaluation**: No hardcoded confidence scores - uses Oracle's policy engine
+- **Verification Records**: Saved in `.claude/epics/[epic]/updates/[task]/oracle-verification-*.json`
+- **Processing Paths**: Tracks Oracle's reasoning and analysis method
+
+Oracle commands provide intelligent task completion assessment to ensure quality delivery:
+
+```bash
+# Check all tasks in an epic for Oracle verification status
+/pm:oracle-status memory-system
+
+# Manually verify a specific task before closing
+/pm:oracle-verify 1234
 ```
 
 ## Workflow Phases
@@ -227,6 +255,10 @@ Specialized agents implement tasks while maintaining progress updates and an aud
 - `/pm:issue-close` - Mark issue as complete
 - `/pm:issue-reopen` - Reopen closed issue
 - `/pm:issue-edit` - Edit issue details
+
+### Oracle Commands (Done Oracle Integration)
+- `/pm:oracle-status <epic>` - Show Done Oracle verification status for all tasks in an epic
+- `/pm:oracle-verify <task>` - Manually verify task completion with Done Oracle without closing the task
 
 ### Workflow Commands
 - `/pm:next` - Show next priority issue with epic context
