@@ -38,6 +38,7 @@ echo "🔍 Submitting Task $issue_number for Oracle verification..."
 # Submit to Done Oracle Bridge API
 oracle_response=$(curl -s -X POST "http://localhost:3000/api/bridge/evaluate" \
     -H "Content-Type: application/json" \
+    -H "X-API-Key: dev-api-key-123456" \
     -d "{
         \"repo\": \"$repo_path\",
         \"context\": {
